@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <meta name="viewport" content="width=device-width, initial-scale=1">
+      <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+      <script>
+         $(document).ready(function(){
+            $(document).ajaxError(function(event, jqxhr, settings, thrownError){
+               alert('Error. Contact Marinos');
+            });
+
+
+
+            $(".gpio").click(function(){
+               var gpio=$(this).data('gpio');
+               var duration=$(this).data('duration');
+               var url='/timedon/'+gpio+'/'+duration+'';
+
+               $(this).removeClass('button-success').addClass('button-processing');
+               var currentButton=$(this);
+
+               $.ajax({url:url,success:function(result){
+                  currentButton.removeClass('button-processing').addClass('button-success');
+                  $("#status").append(result);
+               }});
+            });
+
+         });
+      </script>
+      <link href='http://fonts.googleapis.com/css?family=Open+Sans:400,600' rel='stylesheet' type='text/css'>
+      <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css">
+      <style type="text/css">
+         .button-standard {
+            color: white;
+            border-radius: 4px;
+            text-shadow: 0 1px 1px rgba(0, 0, 0, 0.2);
+            width:100%;
+            padding:20px;
+            margin:10px 0;
+         }
+         body{
+            font-family: 'Open Sans', sans-serif;
+            padding:20px;
+            text-align:center;
+         }
+         .button-success{
+            background: rgb(28, 184, 65); /* this is a green */
+         }
+         .button-processing{
+            background: rgb(223, 117, 20); /* this is an orange */
+         }
+
+
+
+      </style>
+   </head>
+   <body>
+      <h1>Gate Control</h1>
+
+
+      <button type="button" class="gpio pure-button button-standard button-success" data-gpio="18" data-duration="1.0">Car Gate</button>
+      <button type="button" class="gpio pure-button button-standard button-success" data-gpio="23" data-duration="1.0">Pedestrian Gate</button>
+      <button type="button" class="gpio pure-button button-standard button-success" data-gpio="24" data-duration="1.0">Garage Door</button>
+      <button type="button" class="gpio pure-button button-standard button-success" data-gpio="25" data-duration="1.0">Test</button>
+
+      <div id="status"></div>
+
+   </body>
+</html>
